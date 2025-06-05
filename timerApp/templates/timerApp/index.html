@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>TimerApp</title>
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+      
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    </head>
+    <body>
+      <div class="topDiv">
+        <div class="projectsDiv">
+          <label for="projects">Choose a project:   </label>
+          <select name="projects" class="selectProject">TODO
+          </select>
+          <button>New project</button>
+          <button>Edit projects</button>
+        </div>
+
+        <div class="logoutDiv">
+          <a href="/logout">Log out</a> <!-- Open modal
+          Are you sure you want to log out? All your time entries will be stopped-->
+        </div>
+      </div>
+
+      <div class="app"></div>
+
+      <div class="logoutModalDiv"></div>
+
+      <div class="createModalDiv"></div>
+      <div class="editModalDiv"></div>
+
+      <script src="{% static 'js/index.js' %}"></script>
+    </body>
+  </html>

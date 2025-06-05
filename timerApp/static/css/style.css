@@ -1,0 +1,126 @@
+body {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    font-family: "Noto Sans";
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Login and register user */
+
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginContainer form {
+    display: flex;
+    flex-direction: column;
+}
+
+.loginContainer input {
+    background-color: rgb(56, 56, 56);
+    border: none;
+    margin-top: 10px;
+    height: 40px;
+    width: 300px;
+    padding: 10px;
+    color: white;
+}
+
+.loginContainer button {
+    margin-top: 30px;
+    height: 50px;
+    background-color: rgb(31, 31, 31);
+    color: white;
+    border: none;
+}
+
+.loginContainer button:hover {
+    background-color: rgb(8, 8, 8);
+    cursor: pointer;
+}
+
+.refLink {
+    margin-top: 30px;
+    color: rgb(192, 192, 192);
+}
+
+.refLink:hover {
+    color: rgb(255, 255, 255);
+}
+
+.errorContainer, .successContainer {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.errorMessage {
+    color: brown;
+}
+
+.successMessage {
+    color: green;
+    font-size: 20px;
+}
+
+/* App */
+
+.topDiv {
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+
+    background-color: rgb(58, 58, 58);
+    padding: 15px;
+    margin: 0;
+}
+
+.logoutDiv {
+    flex: 1;
+    text-align: right;
+}
+
+.logoutDiv a {
+    color: rgb(143, 143, 143);
+    text-decoration: none;
+}
+
+.logoutDiv a:hover {
+    color: white;
+}
+
+.projectsDiv {
+    flex: 4;
+}
+
+.projectsDiv button, .selectProject {
+    height: 30px;
+    background-color: rgb(37, 37, 37);
+}
+
+.selectProject {
+    width: 40%;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-family: "Noto Sans";
+}
+
+.selectProject:active, .selectProject::selection {
+    background-color: rgb(59, 59, 59);
+}
+
+.projectsDiv button {
+    border: none;
+    color: white;
+    font-family: "Noto Sans";
+}
+
+.projectsDiv button:hover {
+    background-color: rgb(94, 94, 94);
+    cursor: pointer;
+}
+
