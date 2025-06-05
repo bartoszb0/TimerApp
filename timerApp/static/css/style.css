@@ -124,3 +124,58 @@ body {
     cursor: pointer;
 }
 
+/* Creation modal */
+.createModalDiv {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.createModal {
+    padding: 30px;
+    background-color: rgb(54, 54, 54);
+}
+
+.createForm div {
+    text-align: center;
+    color: white;
+}
+
+.createForm input, button {
+    background-color: rgb(37, 37, 37);
+    border: none;
+    color: white;
+    font-family: "Noto Sans";
+}
+
+.createForm .newName {
+    height: 30px;
+    padding: 5px;
+}
+
+.chooseColor {
+    margin-top: 15px;
+}
+
+.createForm button:hover {
+    cursor: pointer;
+}
+
+.formButtons {
+    margin-top: 30px;
+}
+
+.formButtons button {
+    width: 100px;
+    height: 40px;
+}
+
+.formButtons button:hover {
+    background-color: rgb(73, 73, 73);
+}

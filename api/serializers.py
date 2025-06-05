@@ -30,4 +30,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = ['id', 'name', 'color']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return Project.objects.create(user=user, **validated_data)

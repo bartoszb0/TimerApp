@@ -1,7 +1,8 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login as auth_login
+from rest_framework.permissions import IsAuthenticated
 from .models import User, Project
 from .serializers import UserSerializer, RegisterSerializer, ProjectSerializer
 from django.views.decorators.csrf import csrf_exempt
@@ -51,6 +52,7 @@ def login(request):
     
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_projects_for_user(request):
     user = request.user
     try:
@@ -60,7 +62,10 @@ def get_projects_for_user(request):
     serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data)
 
-#@api_view(['POST'])
-#def create_project(request):
-    #user = request.user
-    #name = request.data.get('name')
+@api_view(['POST'])
+def create_project(request):
+    serializer = ProjectSerializer(data=request.data, context={'request': request})
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -7,4 +7,5 @@ urlpatterns = [
     path('delete/<int:pk>', views.delete_user),
     path('login/', views.login),
     path('projects/', views.get_projects_for_user),
+    path('projects/create/', views.create_project),
 ]

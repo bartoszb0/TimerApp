@@ -16,7 +16,7 @@
           <label for="projects">Choose a project:   </label>
           <select name="projects" class="selectProject">TODO
           </select>
-          <button>New project</button>
+          <button id="newProjectButton">New project</button>
           <button>Edit projects</button>
         </div>
 
@@ -26,13 +26,34 @@
         </div>
       </div>
 
-      <div class="app"></div>
+      <div class="app">
+      </div>
 
       <div class="logoutModalDiv"></div>
 
-      <div class="createModalDiv"></div>
+
+      <div class="createModalDiv">
+        <div class="createModal">
+          <form class="createForm">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <div>
+              <input type="text" class="newName" placeholder="Enter project name" name="name" required>
+            </div>
+            <div>
+              <label for="colorPicker">Pick a color:</label>
+              <input type="color" class="chooseColor" name="color" value="#D6D6D6">
+            </div>
+            <div class="formButtons">
+              <button type="submit">Submit</button>
+              <button type="close" id="closeModal">Close</button> <!-- zrobic zeby to nie wysylalo forma-->
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div class="editModalDiv"></div>
 
-      <script src="{% static 'js/index.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+      <script type="module" src="{% static 'js/index.js' %}"></script>
     </body>
   </html>
