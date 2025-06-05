@@ -3,7 +3,34 @@ const csrfToken = Cookies.get('csrftoken');
 
 // Populate projects selection
 const selector = document.querySelector('select[name="projects"]');
-  // TODO
+
+async function populateSelector() {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/projects/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+
+        if (data.length > 0) {
+            data.forEach(project => {
+                const option = document.createElement('option');
+                selector.appendChild(option);
+                option.textContent = project.name;
+                option.style.color = project.color;
+            })
+        } else {
+            console.log("empty") // TODO, handle this
+        }
+
+    } catch (error) {
+        console.error('Error:', error)
+    }
+}
+
+document.addEventListener('DOMContentLoaded', populateSelector)
 
 
 // Open modal for creating new project
@@ -15,11 +42,13 @@ openModalButton.addEventListener('click', () => {
     createModalDiv.style.display = 'flex';
 })
 
-closeModalButton.addEventListener('click', closeModal)
-
 function closeModal() {
     createModalDiv.style.display = 'none';
+    createForm.reset()
 }
+
+closeModalButton.addEventListener('click', closeModal)
+
 
 // Create new project
 const createForm = document.querySelector('.createForm')
@@ -43,15 +72,14 @@ async function createProject(e) {
         });
         const data = await response.json();
 
-        console.log(data)
+        // TODO dac w modelu ze nazwa musi byc unique dla jednego uzytkownika(?)
+
+        populateSelector()
         closeModal()
-        createForm.reset()
 
     } catch (error) {
         console.error('Error:', error)
     }
-
-    console.log(newProject)
 }
 
 createForm.addEventListener('submit', createProject)

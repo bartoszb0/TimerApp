@@ -62,7 +62,9 @@ def get_projects_for_user(request):
     serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_project(request):
     serializer = ProjectSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
