@@ -16,10 +16,7 @@ async function populateSelector() {
 
         if (data.length > 0) {
             data.forEach(project => {
-                const option = document.createElement('option');
-                selector.appendChild(option);
-                option.textContent = project.name;
-                option.style.color = project.color;
+                addToSelector(project)
             })
         } else {
             console.log("empty") // TODO, handle this
@@ -50,7 +47,7 @@ function closeModal() {
 closeModalButton.addEventListener('click', closeModal)
 
 
-// Create new project
+// Creating new project
 const createForm = document.querySelector('.createForm')
 
 async function createProject(e) {
@@ -72,9 +69,9 @@ async function createProject(e) {
         });
         const data = await response.json();
 
-        // TODO dac w modelu ze nazwa musi byc unique dla jednego uzytkownika(?)
+        // TODO dac w modelu ze nazwa PROJEKTU(?) musi byc unique dla jednego uzytkownika(?)
 
-        populateSelector()
+        addToSelector(data)
         closeModal()
 
     } catch (error) {
@@ -83,3 +80,11 @@ async function createProject(e) {
 }
 
 createForm.addEventListener('submit', createProject)
+
+// helper function for adding new projects to selector dropdown
+function addToSelector(project) {
+    const option = document.createElement('option');
+    selector.appendChild(option);
+    option.textContent = project.name;
+    option.style.color = project.color;
+}

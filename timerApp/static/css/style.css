@@ -109,7 +109,7 @@ body {
     font-family: "Noto Sans";
 }
 
-.selectProject:active, .selectProject::selection {
+.selectProject:active {
     background-color: rgb(59, 59, 59);
 }
 
