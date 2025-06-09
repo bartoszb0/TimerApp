@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login as auth_login
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from .models import User, Project
 from .serializers import UserSerializer, RegisterSerializer, ProjectSerializer
@@ -23,10 +24,7 @@ def create_user(request):
 
 @api_view(['GET', 'DELETE'])
 def delete_user(request, pk):
-    try:
-        user = User.objects.get(pk=pk)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    user = get_object_or_404(User, pk=pk)
     
     if request.method == 'GET':
         serializer = UserSerializer(user)
@@ -59,6 +57,7 @@ def get_projects_for_user(request):
         projects = Project.objects.filter(user=user)
     except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
     serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data)
 
@@ -70,4 +69,32 @@ def create_project(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_project(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    
+    if project.user != request.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    else:
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_color(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+
+    if project.user != request.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+    serializer = ProjectSerializer(project, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

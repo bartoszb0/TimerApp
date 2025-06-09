@@ -17,7 +17,7 @@
           <select name="projects" class="selectProject">TODO
           </select>
           <button id="newProjectButton">New project</button>
-          <button>Edit projects</button>
+          <button id="editModalButton">Edit projects</button>
         </div>
 
         <div class="logoutDiv">
@@ -44,14 +44,20 @@
               <input type="color" class="chooseColor" name="color" value="#D6D6D6">
             </div>
             <div class="formButtons">
-              <button type="submit">Submit</button>
-              <button type="button" id="closeModal">Close</button> <!-- zrobic zeby to nie wysylalo forma-->
+              <button type="submit" class="modalButton">submit</button>
+              <button type="button" class="modalButton" id="closeCreateModal">close</button> <!-- zrobic zeby to nie wysylalo forma-->
             </div>
           </form>
         </div>
       </div>
 
-      <div class="editModalDiv"></div>
+      <div class="editModalDiv">
+        <div class="editModal">
+          <table id="existingProjects">
+          </table>
+          <button id="closeEditModal" class="modalButton">close</button>
+        </div>
+      </div>
 
       <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
       <script type="module" src="{% static 'js/index.js' %}"></script>

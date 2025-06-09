@@ -125,7 +125,8 @@ body {
 }
 
 /* Creation modal */
-.createModalDiv {
+    /* Parts of edit modal */
+.createModalDiv, .editModalDiv {
     display: none;
     justify-content: center;
     align-items: center;
@@ -137,17 +138,17 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.createModal {
+.createModal, .editModal {
     padding: 30px;
     background-color: rgb(54, 54, 54);
 }
 
-.createForm div {
+.editModal, .createForm div {
     text-align: center;
     color: white;
 }
 
-.createForm input, button {
+.editModal input, .createForm input, button {
     background-color: rgb(37, 37, 37);
     border: none;
     color: white;
@@ -163,19 +164,52 @@ body {
     margin-top: 15px;
 }
 
-.createForm button:hover {
-    cursor: pointer;
-}
-
 .formButtons {
     margin-top: 30px;
 }
 
-.formButtons button {
+.modalButton {
     width: 100px;
     height: 40px;
 }
 
-.formButtons button:hover {
+.modalButton:hover {
     background-color: rgb(73, 73, 73);
+    cursor: pointer;
+}
+
+/* Rest of edit modal */
+.editModal {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#existingProjects {
+    width: 350px;
+}
+
+#closeEditModal {
+    margin-top: 10px;
+}
+
+.editModal input:hover {
+    cursor: pointer;
+}
+
+.deleteProjectButton {
+    background-color: rgb(105, 15, 15);
+    margin-left: 6px;
+    height: 30px;
+}
+
+.deleteProjectButton:hover {
+    background-color: rgb(158, 19, 19);
+    cursor: pointer;
+}
+
+#existingProjects td {
+    text-align: left;
 }
