@@ -113,6 +113,10 @@ body {
     background-color: rgb(59, 59, 59);
 }
 
+#defaultOption {
+    opacity: 50%;
+}
+
 .projectsDiv button {
     border: none;
     color: white;
@@ -187,10 +191,6 @@ body {
     flex-direction: column;
 }
 
-#existingProjects {
-    width: 350px;
-}
-
 #closeEditModal {
     margin-top: 10px;
 }
@@ -212,4 +212,20 @@ body {
 
 #existingProjects td {
     text-align: left;
+    width: 200px;
+}
+
+/* Project not chosen */
+.projectNotChosen {
+    margin-top: 200px;
+    font-size: 40px;
+    opacity: 50%;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+
+/* App */
+.app {
+    display: none;
 }

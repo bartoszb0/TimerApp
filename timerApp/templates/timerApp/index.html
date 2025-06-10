@@ -13,20 +13,33 @@
     <body>
       <div class="topDiv">
         <div class="projectsDiv">
-          <label for="projects">Choose a project:   </label>
-          <select name="projects" class="selectProject">TODO
+          <select name="projects" class="selectProject">
+            <option value="" disabled selected id="defaultOption"></option>
           </select>
           <button id="newProjectButton">New project</button>
           <button id="editModalButton">Edit projects</button>
         </div>
 
         <div class="logoutDiv">
-          <a href="/logout">Log out</a> <!-- Open modal
+          <a href="/logout">Log out</a> <!-- TODO Open modal
           Are you sure you want to log out? All your time entries will be stopped-->
         </div>
       </div>
 
+      <div class="projectNotChosen">
+        <span>First select a project...</span>
+      </div>
+
       <div class="app">
+
+        <div class="buttonDiv">
+          <p id="projectName"></p>
+          <button id="timerButton">xd</button>
+        </div>
+
+        <div>
+
+        </div>
       </div>
 
       <div class="logoutModalDiv"></div>
