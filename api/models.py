@@ -11,3 +11,8 @@ class Project(models.Model):
     name = models.CharField(max_length=16)
     color = ColorField(default='#D6D6D6')
     totalTime = models.TimeField(null=True) #uzywac datetime w pythonie do obslugiwania czasu
+
+class Entry(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='entries')
+    date = models.DateTimeField()
+    time = models.TimeField()

@@ -111,7 +111,7 @@ function removeFromSelector(id) {
 
 // Open modal for editing existing projects
 
-// TODO only open modal if any project exists
+    // TODO-1 only open modal if any project exists
 
 const openEditModalButton = document.querySelector('#editModalButton');
 const closeEditModalButton = document.querySelector('#closeEditModal')
@@ -186,6 +186,7 @@ async function editName(name) {
 function updateSelectorColor(id, color) {
     const option = document.querySelector(`option[data-id="${id}"]`)
     option.style.color = color;
+    // TODO - edit the color in currently shown project
 }
 
 
@@ -229,7 +230,7 @@ function loadProject() {
     // If there are no projects, go back to select screen
     if (allProjects.length <= 0) {
         noProjects();
-        editModalDiv.style.display = 'none'; // TODO, make the edit modal not openable, close it automatically
+        editModalDiv.style.display = 'none'; // TODO-1, make the edit modal not openable, close it automatically
         return;
     }
 
@@ -239,7 +240,10 @@ function loadProject() {
     projectNotChosenDiv.style.display = 'none';
     appDiv.style.display = 'flex';
 
-    document.querySelector('#projectName').textContent = loadedProject.name
+    const name = document.querySelector('#projectName')
+    name.textContent = loadedProject.name;
+    name.style.color = loadedProject.color;
+    name.dataset.id = loadedProject.id;
 }
 
 selector.addEventListener('change', loadProject);
@@ -250,3 +254,91 @@ function noProjects() {
     appDiv.style.display = 'none';
     projectNotChosenDiv.style.display = 'flex';
 }
+
+
+
+// TEMPORARY FUNCTION
+const topMenu = document.querySelector('.topDiv');
+const timerButton = document.querySelector('.timerButton');
+const timerText = document.querySelector('#timerText');
+
+
+function formatZero(int) {
+    return int.toString().padStart(2, '0')
+}
+
+function activateTimer() {
+    // Get ID of a project that entry will be related to
+    const projectID = parseInt(selector.value)
+
+    // Set a new beginning date for an entry and make it an ISO string so backend can parse it
+    const beginningDate = new Date();
+    const isoDate = beginningDate.toISOString();
+
+    // Timer logic
+    let seconds = 0;
+    let mins = 0;
+    let hours = 0;
+
+    timerText.textContent = `${formatZero(hours)}:${formatZero(mins)}:${formatZero(seconds)}`;
+
+    const timer = setInterval(() => {
+        seconds++;
+
+        if (seconds >= 60) {
+            seconds = 0;
+            mins++;
+        }
+
+        if (mins >= 60) {
+            mins = 0;
+            hours++;
+        }
+
+        timerText.textContent = `${formatZero(hours)}:${formatZero(mins)}:${formatZero(seconds)}`;
+        document.title = timerText.textContent;
+    }, 1000);
+
+    console.log('TURNED ON');
+    timerButton.classList.add('activeTimer');
+
+    topMenu.style.visibility = 'hidden';
+
+    timerButton.removeEventListener('click', activateTimer);
+    timerButton.addEventListener('click', () => 
+        deactivateTimer(timer, timerText.textContent, isoDate, projectID), {once: true});
+}
+
+function deactivateTimer(timer, timePassed, beginningDate, projectID) {
+    clearInterval(timer)
+    document.title = 'TimerApp';
+
+    console.log(timePassed)
+    console.log(beginningDate)
+    console.log(projectID)
+
+    
+
+    // TODO - fetch data to the server
+    // TODO, also fetch data when user closes the page
+
+    console.log('TURNED OFF');
+    timerButton.classList.remove('activeTimer');
+    timerText.textContent = 'Start timer'
+
+    topMenu.style.visibility = 'visible';
+
+    timerButton.addEventListener('click', activateTimer);
+}
+
+timerButton.addEventListener('click', activateTimer);
+
+
+// beforeunload
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('xd', 'plplpl')
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+    console.log(localStorage.getItem('xd'))
+})

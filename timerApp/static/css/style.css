@@ -228,4 +228,36 @@ body {
 /* App */
 .app {
     display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button div */
+.buttonDiv, .secondDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+}
+
+.timerButton {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    font-size: 40px;
+}
+
+.timerButton:hover {
+    background-color: black;
+    cursor: pointer;
+}
+
+.activeTimer {
+    background-color: rgb(53, 137, 211);
+}
+
+.activeTimer:hover {
+    background-color: rgb(100, 171, 233);
+    cursor: pointer;
 }

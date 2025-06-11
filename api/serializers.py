@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Project
+from .models import User, Project, Entry
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,6 +27,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -35,3 +36,9 @@ class ProjectSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         return Project.objects.create(user=user, **validated_data)
+    
+
+class EntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entry
+        fields = '__all__'
