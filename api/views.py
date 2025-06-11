@@ -4,9 +4,13 @@ from rest_framework import status
 from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from .models import User, Project
-from .serializers import UserSerializer, RegisterSerializer, ProjectSerializer
+from .models import User, Project, Entry
+from .serializers import UserSerializer, RegisterSerializer, ProjectSerializer, EntrySerializer
 from django.views.decorators.csrf import csrf_exempt
+
+import datetime
+from django.utils.dateparse import parse_datetime
+
 
 @api_view(["GET"])
 def get_users(request):
@@ -98,3 +102,45 @@ def update_color(request, pk):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST', 'GET'])
+@permission_classes([IsAuthenticated])
+def project_entry(request, projectID):
+    project = get_object_or_404(Project, pk=projectID)
+
+    if project.user != request.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    if request.method == 'POST':
+    
+        dateData = request.data['date']
+        date = parse_datetime(dateData)
+
+        timeData = request.data['time']
+        hours, minutes, seconds = timeData.split(':')
+        time = datetime.time(int(hours), int(minutes), int(seconds))
+
+        dateAndTime = {
+            'date': date,
+            'time': time,
+        }
+
+        serializer = EntrySerializer(data=dateAndTime, context={'project': project})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED) # also update TotalTime of project
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    if request.method == 'GET': # either get riod of this or change URL name so its not create when you want to get
+        entry = Entry.objects.filter(project=project)
+        serializer = EntrySerializer(entry, many=True)
+        return Response(serializer.data)
+
+    
+
+@api_view(['GET'])
+def all_entry(request):
+    entry = Entry.objects.all()
+    serializer = EntrySerializer(entry, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

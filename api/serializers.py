@@ -41,4 +41,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 class EntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Entry
-        fields = '__all__'
+        fields = ['date', 'time']
+
+    def create(self, validated_data):
+        project = self.context['project']
+        return Entry.objects.create(project=project, **validated_data)

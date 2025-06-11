@@ -309,7 +309,7 @@ function activateTimer() {
         deactivateTimer(timer, timerText.textContent, isoDate, projectID), {once: true});
 }
 
-function deactivateTimer(timer, timePassed, beginningDate, projectID) {
+async function deactivateTimer(timer, timePassed, beginningDate, projectID) {
     clearInterval(timer)
     document.title = 'TimerApp';
 
@@ -317,9 +317,33 @@ function deactivateTimer(timer, timePassed, beginningDate, projectID) {
     console.log(beginningDate)
     console.log(projectID)
 
-    
+    const newEntry = {
+        date: beginningDate,
+        time: timePassed
+    }
 
-    // TODO - fetch data to the server
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/entry/project-${projectID}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(newEntry)
+        });
+
+        const data = await response.json()
+
+        if (response.ok) {
+            console.log('Entry saved:', data)
+        } else {
+            console.log('Error while saving entry:', data);
+        }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
     // TODO, also fetch data when user closes the page
 
     console.log('TURNED OFF');
