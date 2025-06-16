@@ -115,24 +115,31 @@ def project_entry(request, projectID):
     if request.method == 'POST':
     
         dateData = request.data['date']
-        date = parse_datetime(dateData)
+        entryDate = parse_datetime(dateData)
 
         timeData = request.data['time']
         hours, minutes, seconds = timeData.split(':')
-        time = datetime.time(int(hours), int(minutes), int(seconds))
+        entryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+        print(entryTime)
 
         dateAndTime = {
-            'date': date,
-            'time': time,
+            'date': entryDate,
+            'time': entryTime,
         }
 
         serializer = EntrySerializer(data=dateAndTime, context={'project': project})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED) # also update TotalTime of project
+            # Then save Total Time for project            
+            newTotal = project.totalTime + entryTime
+
+            project.totalTime = newTotal
+            project.save()
+            print(project.totalTime) # add it to dateandtime as Whole Project Length
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if request.method == 'GET': # either get riod of this or change URL name so its not create when you want to get
+    if request.method == 'GET':
         entry = Entry.objects.filter(project=project)
         serializer = EntrySerializer(entry, many=True)
         return Response(serializer.data)

@@ -14,7 +14,7 @@
       <div class="topDiv">
         <div class="projectsDiv">
           <select name="projects" class="selectProject">
-            <option value="" disabled selected id="defaultOption"></option>
+            <option value="" disabled selected id="defaultOption"> </option>
           </select>
           <button id="newProjectButton">New project</button>
           <button id="editModalButton">Edit projects</button>
@@ -32,14 +32,31 @@
 
       <div class="app">
 
-        <div class="buttonDiv">
-          <p id="projectName"></p>
-          <button class="timerButton"><p id="timerText">Start timer</p></button>
+        <div class="upperDivs">
+
+          <div class="buttonDiv">
+            <p id="projectName"></p>
+            <button class="timerButton"><p id="timerText">Start timer</p></button>
+          </div>
+
+          <div class="entriesDiv">
+            <p>Today's entries:</p>
+            
+            <div class="todaysEntries">
+            </div>
+          </div>
+
+          <div class="statsProjectDiv">
+            <p>Statistics</p>
+          </div>
+
         </div>
 
-        <div class="secondDiv">
-          <p>temporary</p>
+        <div class="lowerDiv">
+          <p id="totalProjectTime">Total time:</p>
+          <p>calendar</p>
         </div>
+
 
       </div>
 
@@ -59,7 +76,7 @@
             </div>
             <div class="formButtons">
               <button type="submit" class="modalButton">submit</button>
-              <button type="button" class="modalButton" id="closeCreateModal">close</button> <!-- zrobic zeby to nie wysylalo forma-->
+              <button type="button" class="modalButton" id="closeCreateModal">close</button>
             </div>
           </form>
         </div>

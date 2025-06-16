@@ -244,6 +244,8 @@ function loadProject() {
     name.textContent = loadedProject.name;
     name.style.color = loadedProject.color;
     name.dataset.id = loadedProject.id;
+
+    loadEntries(idToFind);
 }
 
 selector.addEventListener('change', loadProject);
@@ -257,7 +259,7 @@ function noProjects() {
 
 
 
-// TEMPORARY FUNCTION
+// Timer functionality
 const topMenu = document.querySelector('.topDiv');
 const timerButton = document.querySelector('.timerButton');
 const timerText = document.querySelector('#timerText');
@@ -306,16 +308,20 @@ function activateTimer() {
 
     timerButton.removeEventListener('click', activateTimer);
     timerButton.addEventListener('click', () => 
-        deactivateTimer(timer, timerText.textContent, isoDate, projectID), {once: true});
+        deactivateTimer(timer, timerText.textContent, isoDate, projectID), {once: true}
+    );
+    window.addEventListener('beforeunload', handleBeforeUnload);
+}
+
+function handleBeforeUnload(event) {
+    event.preventDefault();
+    event.returnValue = '';
 }
 
 async function deactivateTimer(timer, timePassed, beginningDate, projectID) {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
     clearInterval(timer)
     document.title = 'TimerApp';
-
-    console.log(timePassed)
-    console.log(beginningDate)
-    console.log(projectID)
 
     const newEntry = {
         date: beginningDate,
@@ -323,7 +329,7 @@ async function deactivateTimer(timer, timePassed, beginningDate, projectID) {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/api/entry/project-${projectID}/`, {
+        const newEntryResponse = await fetch(`http://127.0.0.1:8000/api/entry/project-${projectID}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -332,21 +338,20 @@ async function deactivateTimer(timer, timePassed, beginningDate, projectID) {
             body: JSON.stringify(newEntry)
         });
 
-        const data = await response.json()
+        const newEntryData = await newEntryResponse.json()
 
-        if (response.ok) {
-            console.log('Entry saved:', data)
+        if (newEntryResponse.ok && newEntryData.time !== '00:00:00') {
+            console.log('Entry saved:', newEntryData);
+            populateTodaysEntries(newEntryData);
         } else {
-            console.log('Error while saving entry:', data);
+            console.log('Error while saving entry:', newEntryData);
         }
 
         } catch (error) {
             console.error('Error:', error);
         }
 
-    // TODO, also fetch data when user closes the page
-
-    console.log('TURNED OFF');
+    // Make timer look the same as before
     timerButton.classList.remove('activeTimer');
     timerText.textContent = 'Start timer'
 
@@ -358,11 +363,36 @@ async function deactivateTimer(timer, timePassed, beginningDate, projectID) {
 timerButton.addEventListener('click', activateTimer);
 
 
-// beforeunload
-window.addEventListener('beforeunload', () => {
-  localStorage.setItem('xd', 'plplpl')
-});
+async function loadEntries(projectID) {
+    try {
+        const getEntriesResponse = await fetch(`http://127.0.0.1:8000/api/entry/project-${projectID}/`, {
+            method: 'GET'
+        })
 
-window.addEventListener('DOMContentLoaded', function() {
-    console.log(localStorage.getItem('xd'))
-})
+        const entriesData = await getEntriesResponse.json()
+
+        if (getEntriesResponse.ok) {
+            entriesData.forEach(entry => {
+                populateTodaysEntries(entry)
+            })
+        } else {
+            console.error('Error:', entriesData)
+        }
+
+
+    } catch (error) {
+        console.error('Error:', error)
+    }
+}
+
+function populateTodaysEntries(entry) {
+    const entriesGoTo = document.querySelector('.todaysEntries')
+
+    const entryTime = entry.time;
+    const entryDate = new Date(entry.date).toLocaleString();
+
+    const newEntry = document.createElement('p');
+    newEntry.classList.add('todaysEntry');
+    entriesGoTo.appendChild(newEntry);
+    newEntry.textContent = `Time: ${entryTime} | Date: ${entryDate}`;
+}

@@ -228,15 +228,22 @@ body {
 /* App */
 .app {
     display: none;
-    align-items: center;
+    flex-direction: column;
+}
+
+/* Button div and second div */
+.upperDivs {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
+    width: 100vw;
+    flex: 1;
 }
 
 /* Button div */
-.buttonDiv, .secondDiv {
+.buttonDiv, .entriesDiv, .statsProjectDiv {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     flex: 1;
 }
@@ -260,4 +267,27 @@ body {
 .activeTimer:hover {
     background-color: rgb(100, 171, 233);
     cursor: pointer;
+}
+
+/* Second div */
+.todaysEntries {
+    max-height: 400px;
+    overflow-y: scroll; /* TODO fix display of scroll */
+    padding-left: 100px;
+    padding-right: 100px;
+} 
+
+.todaysEntry {
+    text-align: left;
+    padding: 10px;
+    background-color: rgba(102, 102, 102, 0.4);
+    border-radius: 10px;
+}
+
+/* Lower div */
+.lowerDiv {
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px;
+    background-color: rgb(54, 54, 54);
 }
